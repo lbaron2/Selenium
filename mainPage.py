@@ -7,7 +7,7 @@ def readSens() -> None:
     if "sensitive.txt" in os.listdir():
         with open(r"sensitive.txt", "r") as txt:
             for line in txt:
-                words = line.strip().split(":")
+                words = line.strip().split("::")
                 sensitive[words[0].upper()] = words[1]
                 
 def mainWebsiteTest():
