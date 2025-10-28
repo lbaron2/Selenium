@@ -24,7 +24,7 @@ if __name__ == "__main__":
             imgs = tests.findImgs(driver)
 
             for img in imgs:
-                errorCount += setup.ifError(tests.checkIfHasAlt(img),page,f"{img} does not have an alt tag",output)
+                errorCount += setup.ifError(tests.ifHasAlt(img),page,f"{img.get_attribute("src")} does not have an alt tag",output)
             
             if(errorCount != priorErrorCount):
                 pageError += 1
