@@ -5,7 +5,7 @@ import datetime
 def run():
     driver = setup.setup()
     pages = setup.findAllPages(driver)
-    with open(f"reports/report_{datetime.datetime.today().strftime("%Y-%m-%d")}.md","w+") as output: 
+    with open(f"reports/report_{datetime.datetime.today().strftime("%Y-%m-%d_%I-%M-%S_%p")}.html","w+") as output: 
 
         errorCount = 0
         pageError = 0
@@ -21,7 +21,7 @@ def run():
             imgs = tests.findImgs(driver)
 
             for img in imgs:
-                errorCount += setup.ifError(tests.ifHasAlt(img),page,f"{img.get_attribute("src")} does not have an alt tag",output)
+                errorCount += setup.ifError(tests.ifHasAlt(img),page,f"<img style= 'width:100px; height:100px;' src={img.get_attribute("src")}> does not have an alt tag",output)
             
             if(errorCount != priorErrorCount):
                 pageError += 1
