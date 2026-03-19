@@ -1,2 +1,4 @@
 sensitive.txt
-report.md
+*.md
+*.pyc
+\__pycache__
