@@ -1,15 +1,20 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import os
+
+
 def readSens() -> None:
     """Reads in values that are not supposed to be on github through a file called "sensitive.txt", such as website access passwords or API keys"""
-    import os
     global sensitive
+    global keys
 
     sensitive = {}
+    keys = []
     if "sensitive.txt" in os.listdir():
         with open(r"sensitive.txt", "r") as txt:
             for line in txt:
                 words = line.strip().split("::")
+                keys.append(words[0].upper())
                 sensitive[words[0].upper()] = words[1]
 
 def setup() -> object:
@@ -93,9 +98,18 @@ def ifError(test, page, type, output) -> int:
         return 1
     return 0
 
+def setLink(newLink:str):
+    """Updates Link from UI"""
+    sensitive["LINK"] = newLink
+    saveSens()
+
+def saveSens():
+    if "sensitive.txt" in os.listdir():
+        with open(r"sensitive.txt", "w+") as txt:
+            lineCount = len(keys)
+            for i in range(0,lineCount):
+                print(f"{keys[i]}::{sensitive[keys[i]]}",file=txt)
+
+
 if __name__ == "__main__":
     readSens()
-    driver = setup()
-
-    print(findAllPages(driver))
-    close(driver)

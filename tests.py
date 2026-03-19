@@ -7,6 +7,9 @@ def findImgs(driver) -> list[str]:
     imgs = driver.find_elements(By.TAG_NAME, "img")
     return imgs
 
+def findMetaTags(driver) -> list[str]: 
+    return driver.find_elements(By.TAG_NAME, "meta")
+
 def ifHasAlt(img) -> bool:
     properties = img.get_attribute("alt")
 
@@ -15,6 +18,9 @@ def ifHasAlt(img) -> bool:
     return True
 
 def if404(driver) ->bool:
+    return False
+
+def ifMetaName(driver) ->bool:
     return False
 
 def ifMetaDesc(driver) ->bool:
