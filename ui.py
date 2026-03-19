@@ -33,9 +33,13 @@ def main():
 
     root.mainloop()
 
+def openFileExplorer():
+    import webbrowser
+    webbrowser.open(f"{setup.sensitive["PATH"]}/reports")
+
 def runButtons(runFRM,root):
     ttk.Button(runFRM, text="Run", command=report.run).grid(column=BUTTON_COL, row=10)
-    ttk.Button(runFRM, text="Open", command=root.destroy).grid(column=BUTTON_COL, row=11)
+    ttk.Button(runFRM, text="Open", command=openFileExplorer).grid(column=BUTTON_COL, row=11)
     ttk.Button(runFRM, text="Quit", command=root.destroy).grid(column=BUTTON_COL, row=12)
 
 def urlChange(frm):
