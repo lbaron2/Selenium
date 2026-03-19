@@ -3,3 +3,4 @@ sensitive.txt
 *.pyc
 \__pycache__
 *.html
+*.zip
