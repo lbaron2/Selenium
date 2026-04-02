@@ -92,9 +92,14 @@ def findAllPages(driver):
 
     return seenLinks
 
-def ifError(test, page, type, output) -> int:
+def errorCountDifferent(errorCount, priorErrorCount):
+    if(errorCount != priorErrorCount):
+            return True
+    return False
+
+def ifError(test, page, newPage, type, output) -> int:
     if(not test):
-        print(f"There was a {type} problem with {page}",file=output)
+        print(f"{type}",end="<br>",file=output)
         return 1
     return 0
 
