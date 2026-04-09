@@ -2,10 +2,10 @@ from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 
-import report
-import setup
-import tests
-import installer
+import src.report as report
+import src.setup as setup
+import src.tests as tests
+import src.installer as installer
 
 LABEL_COL:int = 0
 ENTRY_COL:int = 1
@@ -17,6 +17,8 @@ def main():
 
     root = Tk()
     root.geometry("1000x400")
+
+    installer.update(root)
 
     bodyFRM = ttk.Frame(root, padding=10)
     bodyFRM.grid()

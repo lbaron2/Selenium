@@ -4,3 +4,5 @@ sensitive.txt
 \__pycache__
 *.html
 *.zip
+\dist
+\build

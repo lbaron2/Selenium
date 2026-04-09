@@ -1,22 +1,18 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import json
 import os
 
 
 def readSens() -> None:
     """Reads in values that are not supposed to be on github through a file called "sensitive.txt", such as website access passwords or API keys"""
     global sensitive
-    global keys
 
     sensitive = {}
-    keys = []
-    if "sensitive.txt" in os.listdir():
-        with open(r"sensitive.txt", "r") as txt:
-            for line in txt:
-                words = line.strip().split("::")
-                keys.append(words[0].upper())
-                sensitive[words[0].upper()] = words[1]
-
+    if "config.json" in os.listdir():
+        with open(r"config.json", "r") as file:
+            sensitive = json.load(file)
+    
 def setup() -> object:
     """Makes the browser for the selenium interactions"""
 
@@ -108,13 +104,27 @@ def setLink(newLink:str):
     sensitive["LINK"] = newLink
     saveSens()
 
+def getSens(key:str) -> str:
+    try:
+        return sensitive[key];
+    except:
+        readSens()
+        getSens(key)
+
+def setSens(key:str, value:str):
+    try:
+        sensitive[key] = value;
+    except:
+        readSens()
+        setSens(key)
+
+
 def saveSens():
-    if "sensitive.txt" in os.listdir():
-        with open(r"sensitive.txt", "w+") as txt:
-            lineCount = len(keys)
-            for i in range(0,lineCount):
-                print(f"{keys[i]}::{sensitive[keys[i]]}",file=txt)
+    if "config.json" in os.listdir():
+        with open(r"config.json", "w+") as txt:
+            json.dump(sensitive,txt, ensure_ascii=False, indent=4)
 
 
 if __name__ == "__main__":
     readSens()
+    saveSens()

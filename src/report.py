@@ -1,5 +1,5 @@
-import tests
-import setup
+import src.tests as tests
+import src.setup as setup
 import datetime
 
 def run():
