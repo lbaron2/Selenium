@@ -1,5 +1,5 @@
 import requests
-import src.setup as setup
+import setup as setup
 import tkinter as tk
 import os
 
@@ -13,8 +13,10 @@ def update(root):
         downloadUpdate()
 
 def makeReqURL():
-    owner = setup.getSens("OWNER")
-    repo = setup.getSens("REPO")
+    setup.readSens()
+    print(setup.sensitive)
+    owner = setup.sensitive["OWNER"]
+    repo = setup.sensitive["REPO"]
     global url
     url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
 
@@ -22,7 +24,7 @@ def getCurrentRelease() -> str:
     return json["name"]
 
 def needUpdate() -> bool:
-    localVersion = setup.getSens("RELEASE")
+    localVersion = setup.sensitive["RELEASE"]
 
     remoteVersion = getCurrentRelease()
 
@@ -45,7 +47,7 @@ def updateUI(frm):
     tk.Button(frm, text="No", command=frm.destroy).grid(column=6, row=2)
 
 def makeEXE():
-    os.system("pyinstaller --onedir --noconsole ui.py")
+    os.system(f"pyinstaller -y --clean --log-level DEBUG -n WebTester -p {os.getcwd()}//src src/ui.py")
 
 def downloadUpdate():
     zip_url = json['zipball_url']
@@ -53,7 +55,7 @@ def downloadUpdate():
     with open('release.zip', 'wb') as f:
         f.write(r.content)
     makeEXE()
-    setup.setSens("RELEASE", json["name"]) 
+    setup.sensitive["RELEASE"] = json["name"] 
     setup.saveSens()
 
 if __name__ == "__main__":
