@@ -5,5 +5,3 @@ sensitive.txt
 *.html
 *.zip
 \dist
-\build
-*.spec
