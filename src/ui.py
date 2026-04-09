@@ -2,10 +2,10 @@ from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 
-import src.report as report
-import src.setup as setup
-import src.tests as tests
-import src.installer as installer
+import report as report
+import setup as setup
+import tests as tests
+import installer as installer
 
 LABEL_COL:int = 0
 ENTRY_COL:int = 1

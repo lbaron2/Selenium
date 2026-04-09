@@ -1,4 +1,4 @@
-import src.setup as setup
+import setup as setup
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
