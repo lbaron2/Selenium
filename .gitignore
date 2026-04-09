@@ -6,3 +6,4 @@ sensitive.txt
 *.zip
 \dist
 \build
+*.spec
