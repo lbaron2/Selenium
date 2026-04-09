@@ -7,12 +7,15 @@ import setup as setup
 import tests as tests
 import installer as installer
 
+import multiprocessing
+
 LABEL_COL:int = 0
 ENTRY_COL:int = 1
 BUTTON_COL:int = 20
 
 
 def main():
+    multiprocessing.freeze_support()
     setup.readSens()
 
     root = Tk()
