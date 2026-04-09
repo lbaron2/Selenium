@@ -2,19 +2,18 @@ import requests
 import setup as setup
 import tkinter as tk
 import os
+import shutil
 
 def update(root):
     setup.readSens()
     makeReqURL()
     global json
     json = requests.get(url).json()
-    print(json)
     if(updatePrompt(root)):
         downloadUpdate()
 
 def makeReqURL():
     setup.readSens()
-    print(setup.sensitive)
     owner = setup.sensitive["OWNER"]
     repo = setup.sensitive["REPO"]
     global url
@@ -47,7 +46,9 @@ def updateUI(frm):
     tk.Button(frm, text="No", command=frm.destroy).grid(column=6, row=2)
 
 def makeEXE():
-    os.system(f"pyinstaller -y --clean --log-level DEBUG -n WebTester -p {os.getcwd()}//src src/ui.py")
+    os.system(f"pyinstaller -y --clean --log-level DEBUG -n WebTester -p {os.getcwd()}//src src/ui.py --onedir --distpath {os.getcwd()} --noconsole")
+    shutil.move("WebTester//WebTester.exe", "WebTester.exe")
+    shutil.move("WebTester//_internal", "_internal")
 
 def downloadUpdate():
     zip_url = json['zipball_url']

@@ -112,7 +112,6 @@ def saveSens():
         with open(r"config.json", "w+") as txt:
             json.dump(sensitive,txt, ensure_ascii=False, indent=4)
 
-
 if __name__ == "__main__":
     readSens()
     saveSens()
