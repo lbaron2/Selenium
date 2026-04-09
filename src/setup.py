@@ -2,16 +2,19 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import json
 import os
+from pathlib import Path
 
 
 def readSens() -> None:
-    """Reads in values that are not supposed to be on github through a file called "sensitive.txt", such as website access passwords or API keys"""
+    """Reads in values that are not supposed to be on github through a file called "config", such as website access passwords or API keys"""
     global sensitive
 
-    sensitive = {}
+    sensitive = {}    
+    os.chdir(f"{os.getcwd()}\\json")
     if "config.json" in os.listdir():
         with open(r"config.json", "r") as file:
             sensitive = json.load(file)
+    os.chdir("..")
     
 def setup() -> object:
     """Makes the browser for the selenium interactions"""
@@ -103,21 +106,6 @@ def setLink(newLink:str):
     """Updates Link from UI"""
     sensitive["LINK"] = newLink
     saveSens()
-
-def getSens(key:str) -> str:
-    try:
-        return sensitive[key];
-    except:
-        readSens()
-        getSens(key)
-
-def setSens(key:str, value:str):
-    try:
-        sensitive[key] = value;
-    except:
-        readSens()
-        setSens(key)
-
 
 def saveSens():
     if "config.json" in os.listdir():
