@@ -108,10 +108,11 @@ def setLink(newLink:str):
     saveSens()
 
 def saveSens():
-    if "config.json" in os.listdir():
-        with open(r"config.json", "w+") as txt:
+    if "json" in os.listdir():
+        with open(r"json//config.json", "w+") as txt:
             json.dump(sensitive,txt, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     readSens()
+    sensitive["LINK"] = ""
     saveSens()

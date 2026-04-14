@@ -3,6 +3,7 @@ import setup as setup
 import tkinter as tk
 import os
 import shutil
+import zipfile
 
 def update(root):
     setup.readSens()
@@ -35,14 +36,15 @@ def updatePrompt(root):
     if(needUpdate()):
         updateWindow = tk.Toplevel(root)
         updateWindow.geometry("400x100")
-        updateWindow.title("Do you want to Update")
+        updateWindow.title("Update Prompt")
         updateWindow.grid()
+        updateWindow.attributes('-topmost', True)
         updateUI(updateWindow)
 
 
 def updateUI(frm):
     tk.Label(frm, text="Would you like to Update the Program?").grid(column=3, row = 1)
-    tk.Button(frm, text="Yes", command=downloadUpdate).grid(column=3, row=2)
+    tk.Button(frm, text="Yes", command= lambda: downloadUpdate(frm)).grid(column=3, row=2)
     tk.Button(frm, text="No", command=frm.destroy).grid(column=6, row=2)
 
 def makeEXE():
@@ -50,14 +52,27 @@ def makeEXE():
     # shutil.move("WebTester//WebTester.exe", "WebTester.exe")
     # shutil.move("WebTester//_internal", "_internal")
 
-def downloadUpdate():
+
+def getZip():
     zip_url = json['zipball_url']
     r = requests.get(zip_url, allow_redirects=True)
     with open('release.zip', 'wb') as f:
         f.write(r.content)
+
+def updateFromZip():
+    with zipfile.ZipFile('release.zip', 'r') as zip_ref:
+        zip_ref.extractall("/src")
+
+def downloadUpdate(frm):
+
+    getZip()
     makeEXE()
+    updateFromZip()
+
+    setup.sensitive["PATH"] = os.getcwd()
     setup.sensitive["RELEASE"] = json["name"] 
     setup.saveSens()
+    frm.destroy()
 
 if __name__ == "__main__":
     makeEXE()
