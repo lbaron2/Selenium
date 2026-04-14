@@ -4,14 +4,14 @@ import tkinter as tk
 import os
 import shutil
 import zipfile
+import ui
 
 def update(root):
     setup.readSens()
     makeReqURL()
     global json
     json = requests.get(url).json()
-    if(updatePrompt(root)):
-        downloadUpdate()
+    ui.updatePrompt(root)
 
 def makeReqURL():
     setup.readSens()
@@ -32,21 +32,6 @@ def needUpdate() -> bool:
         return True
     return False
 
-def updatePrompt(root):
-    if(needUpdate()):
-        updateWindow = tk.Toplevel(root)
-        updateWindow.geometry("400x100")
-        updateWindow.title("Update Prompt")
-        updateWindow.grid()
-        updateWindow.attributes('-topmost', True)
-        updateUI(updateWindow)
-
-
-def updateUI(frm):
-    tk.Label(frm, text="Would you like to Update the Program?").grid(column=3, row = 1)
-    tk.Button(frm, text="Yes", command= lambda: downloadUpdate(frm)).grid(column=3, row=2)
-    tk.Button(frm, text="No", command=frm.destroy).grid(column=6, row=2)
-
 def makeEXE():
     os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {os.getcwd()}//src src/ui.py --onefile --distpath {os.getcwd()} --noconsole")
 
@@ -63,10 +48,13 @@ def updateFromZip():
 
     os.chdir(f"{setup.sensitive["PATH"]}\\src")
     
+    newFilesDir = ""
+
     print(os.listdir())
     for dir in os.listdir():
         if not("py" in dir or "." in dir):
             print(dir)
+            newFilesDir = dir
             os.chdir(f"{dir}")
             for newfile in os.listdir():
                 print(newfile)
@@ -75,11 +63,13 @@ def updateFromZip():
                 else:
                     shutil.copy(f"{setup.sensitive["PATH"]}\\src\\{dir}\\{newfile}", f"{setup.sensitive["PATH"]}\\src\\{newfile}")
 
+    
     os.chdir("..")
     os.chdir("..")
 
     os.remove("release.zip")
-def downloadUpdate(frm):
+
+def downloadUpdate(frm,root):
 
     setup.sensitive["PATH"] = os.getcwd()
     
@@ -90,6 +80,8 @@ def downloadUpdate(frm):
     setup.sensitive["RELEASE"] = json["name"] 
     setup.saveSens()
     frm.destroy()
+
+    ui.restartNotification(root)
 
 if __name__ == "__main__":
     makeEXE()

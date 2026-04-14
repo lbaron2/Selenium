@@ -69,5 +69,29 @@ def updateURL():
     currentURL.set(url)
     newURL.set("")
 
+def updatePrompt(root):
+    if(installer.needUpdate()):
+        updateWindow = tk.Toplevel(root)
+        updateWindow.geometry("400x100")
+        updateWindow.title("Update Prompt")
+        updateWindow.grid()
+        updateWindow.attributes('-topmost', True)
+        updateUI(updateWindow,root)
+
+def restartNotification(root):
+    restartWindow = tk.Toplevel(root)
+    restartWindow.geometry("400x100")
+    restartWindow.title("Restart Prompt")
+    restartWindow.attributes('-topmost', True)
+    restartWindow.grid()
+
+    tk.Label(restartWindow, text="You will need to restart the program to get use the update").grid(column=3, row = 1)
+    tk.Button(restartWindow, text="Quit", command=root.destroy).grid(column=6, row=2)
+
+def updateUI(frm,root):
+    tk.Label(frm, text="Would you like to Update the Program?").grid(column=3, row = 1)
+    tk.Button(frm, text="Yes", command= lambda: installer.downloadUpdate(frm,root)).grid(column=3, row=2)
+    tk.Button(frm, text="No", command=frm.destroy).grid(column=6, row=2)
+
 if __name__ == "__main__":
     main()
