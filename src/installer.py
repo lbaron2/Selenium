@@ -49,8 +49,6 @@ def updateUI(frm):
 
 def makeEXE():
     os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {os.getcwd()}//src src/ui.py --onefile --distpath {os.getcwd()} --noconsole")
-    # shutil.move("WebTester//WebTester.exe", "WebTester.exe")
-    # shutil.move("WebTester//_internal", "_internal")
 
 
 def getZip():
@@ -61,15 +59,33 @@ def getZip():
 
 def updateFromZip():
     with zipfile.ZipFile('release.zip', 'r') as zip_ref:
-        zip_ref.extractall("/src")
+        zip_ref.extractall("src")
+
+    os.chdir(f"{setup.sensitive["PATH"]}\\src")
+    
+    print(os.listdir())
+    for dir in os.listdir():
+        if not("py" in dir or "." in dir):
+            print(dir)
+            os.chdir(f"{dir}")
+            for newfile in os.listdir():
+                print(newfile)
+                if(not "py" in newfile):
+                    os.remove(newfile)
+                else:
+                    shutil.copy(f"{setup.sensitive["PATH"]}\\src\\{dir}\\{newfile}", f"{setup.sensitive["PATH"]}\\src\\{newfile}")
+
+    os.chdir("..")
+    os.chdir("..")
 
 def downloadUpdate(frm):
 
-    getZip()
-    makeEXE()
-    updateFromZip()
-
     setup.sensitive["PATH"] = os.getcwd()
+    
+    getZip()
+    updateFromZip()
+    makeEXE()
+
     setup.sensitive["RELEASE"] = json["name"] 
     setup.saveSens()
     frm.destroy()
