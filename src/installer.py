@@ -46,9 +46,9 @@ def updateUI(frm):
     tk.Button(frm, text="No", command=frm.destroy).grid(column=6, row=2)
 
 def makeEXE():
-    os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {os.getcwd()}//src src/ui.py --onedir --distpath {os.getcwd()} --noconsole")
-    shutil.move("WebTester//WebTester.exe", "WebTester.exe")
-    shutil.move("WebTester//_internal", "_internal")
+    os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {os.getcwd()}//src src/ui.py --onefile --distpath {os.getcwd()} --noconsole")
+    # shutil.move("WebTester//WebTester.exe", "WebTester.exe")
+    # shutil.move("WebTester//_internal", "_internal")
 
 def downloadUpdate():
     zip_url = json['zipball_url']
