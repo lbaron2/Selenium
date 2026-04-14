@@ -78,6 +78,7 @@ def updateFromZip():
     os.chdir("..")
     os.chdir("..")
 
+    os.remove("release.zip")
 def downloadUpdate(frm):
 
     setup.sensitive["PATH"] = os.getcwd()

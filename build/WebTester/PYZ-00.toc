@@ -1,2 +1,0 @@
-('C:\\Users\\lbaron\\Documents\\Website\\Selenium\\build\\WebTester\\PYZ-00.pyz',
- [])
