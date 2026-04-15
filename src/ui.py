@@ -16,7 +16,7 @@ ENTRY_COL:int = 1
 BUTTON_COL:int = 20
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("ui")
 
 def main():
     multiprocessing.freeze_support()
@@ -75,7 +75,7 @@ def urlChange(frm):
     ttk.Button(frm, text="Update URL", command=updateURL).grid(column=ENTRY_COL, row=3)
 
 def updateURL():
-    logger.info(f"Updating url: {currentURL} -> {newURL.get()}")
+    logger.info(f"Updating url: {currentURL.get()} -> {newURL.get()}")
     url = newURL.get()
     setup.setLink(url)
     currentURL.set(url)
