@@ -35,7 +35,9 @@ def needUpdate() -> bool:
     return False
 
 def makeEXE():
+    logger.info("Making EXE")
     os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {os.getcwd()}//src src/ui.py --onefile --distpath {os.getcwd()} --noconsole")
+    logger.info("\tFinished Making EXE")
 
 
 def getZip():

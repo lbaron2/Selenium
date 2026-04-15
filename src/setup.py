@@ -12,6 +12,7 @@ def readSens() -> None:
     """Reads in values that are not supposed to be on github through a file called "config", such as website access passwords or API keys"""
     global sensitive
 
+    logger.info("Reading Sensitive")
     sensitive = {}    
     os.chdir(f"{os.getcwd()}\\json")
     if "config.json" in os.listdir():
@@ -24,6 +25,7 @@ def setup() -> object:
 
     driver = webdriver.Chrome()
     driver.get(sensitive["LINK"])
+    logger.info("Setting up webdriver")
     
     return driver
 
@@ -115,6 +117,8 @@ def saveSens():
     if "json" in os.listdir():
         with open(r"json//config.json", "w+") as txt:
             json.dump(sensitive,txt, ensure_ascii=False, indent=4)
+    else:
+        logger.info("Cannot find JSON FOLDER")
 
 if __name__ == "__main__":
     readSens()
