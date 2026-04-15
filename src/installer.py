@@ -44,30 +44,30 @@ def getZip():
 
 def updateFromZip():
     with zipfile.ZipFile('release.zip', 'r') as zip_ref:
-        zip_ref.extractall("src")
+        zip_ref.extractall("")
 
-    os.chdir(f"{setup.sensitive["PATH"]}\\src")
+    newFileDir = ""
     
-    newFilesDir = ""
-
-    print(os.listdir())
     for dir in os.listdir():
-        if not("py" in dir or "." in dir):
-            print(dir)
-            newFilesDir = dir
+        absPath = os.path.join(setup.sensitive["PATH"],dir)
+        if("lbaron2" in dir and os.path.isdir(absPath)):
+            newFileDir = absPath
+            print(f"current dir: {absPath}")
             os.chdir(f"{dir}")
-            for newfile in os.listdir():
-                print(newfile)
-                if(not "py" in newfile):
-                    os.remove(newfile)
-                else:
-                    shutil.copy(f"{setup.sensitive["PATH"]}\\src\\{dir}\\{newfile}", f"{setup.sensitive["PATH"]}\\src\\{newfile}")
-
-    
+            for innerDir in os.listdir():
+                absPathInner = os.path.join(absPath,innerDir)
+                print(f"current file/folder: {absPathInner}")
+                if(os.path.isdir(absPathInner)):
+                    print(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
+                    shutil.copytree(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir),dirs_exist_ok=True)
+                elif(os.path.isfile(absPathInner)):
+                    print(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
+                    shutil.copyfile(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir))
     os.chdir("..")
-    os.chdir("..")
 
+    shutil.rmtree(newFileDir)
     os.remove("release.zip")
+
 
 def downloadUpdate(frm,root):
 
