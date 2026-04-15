@@ -9,6 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 def update(root):
+    logger.info("Update Check Started")
     setup.readSens()
     makeReqURL()
     global json
@@ -16,6 +17,7 @@ def update(root):
     ui.updatePrompt(root)
 
 def makeReqURL():
+    logger.info("Making URL to get zip")
     setup.readSens()
     owner = setup.sensitive["OWNER"]
     repo = setup.sensitive["REPO"]
@@ -26,6 +28,7 @@ def getCurrentRelease() -> str:
     return json["name"]
 
 def needUpdate() -> bool:
+    logger.info("Comparing Release Numbers")
     localVersion = setup.sensitive["RELEASE"]
 
     remoteVersion = getCurrentRelease()
@@ -35,18 +38,20 @@ def needUpdate() -> bool:
     return False
 
 def makeEXE():
-    logger.info("Making EXE")
+    logger.info("\tMaking EXE")
     os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {os.getcwd()}//src src/ui.py --onefile --distpath {os.getcwd()} --noconsole")
     logger.info("\tFinished Making EXE")
 
 
 def getZip():
+    logger.info("\tGetting Zip")
     zip_url = json['zipball_url']
     r = requests.get(zip_url, allow_redirects=True)
     with open('release.zip', 'wb') as f:
         f.write(r.content)
 
 def updateFromZip():
+    logger.info("\tUnzipping")
     with zipfile.ZipFile('release.zip', 'r') as zip_ref:
         zip_ref.extractall("")
 
@@ -56,16 +61,15 @@ def updateFromZip():
         absPath = os.path.join(setup.sensitive["PATH"],dir)
         if("lbaron2" in dir and os.path.isdir(absPath)):
             newFileDir = absPath
-            logger.info(f"current dir: {absPath}")
+            logger.info(f"\tcurrent dir: {absPath}")
             os.chdir(f"{dir}")
             for innerDir in os.listdir():
                 absPathInner = os.path.join(absPath,innerDir)
-                logger.info(f"current file/folder: {absPathInner}")
                 if(os.path.isdir(absPathInner)):
-                    logger.info(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
+                    logger.info(f"\t\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
                     shutil.copytree(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir),dirs_exist_ok=True)
                 elif(os.path.isfile(absPathInner)):
-                    logger.info(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
+                    logger.info(f"\t\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
                     shutil.copyfile(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir))
     os.chdir("..")
 
@@ -74,13 +78,14 @@ def updateFromZip():
 
 
 def downloadUpdate(frm,root):
-
+    logger.info("Downloading Update Started")
     setup.sensitive["PATH"] = os.getcwd()
     
     getZip()
     updateFromZip()
     makeEXE()
 
+    logger.info("Updating Release")
     setup.sensitive["RELEASE"] = json["name"] 
     setup.saveSens()
     frm.destroy()

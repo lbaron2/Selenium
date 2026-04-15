@@ -25,7 +25,7 @@ def main():
     time = datetime.datetime.today().strftime("%Y-%m-%d_%I-%M-%S_%p")
     fileName =f"logs/log_{time}.log"
     logging.basicConfig(filename=fileName, level=logging.INFO)
-    logger.info("UI Started")
+    logger.info("Main Started")
 
     root = Tk()
     root.geometry("1000x400")
@@ -53,12 +53,13 @@ def openFileExplorer():
     webbrowser.open(f"{setup.sensitive["PATH"]}/reports")
 
 def runButtons(runFRM,root):
+    logger.info("Run Buttons GUI Stated ")
     ttk.Button(runFRM, text="Run", command=report.run).grid(column=BUTTON_COL, row=10)
     ttk.Button(runFRM, text="Open", command=openFileExplorer).grid(column=BUTTON_COL, row=11)
     ttk.Button(runFRM, text="Quit", command=root.destroy).grid(column=BUTTON_COL, row=12)
 
 def urlChange(frm):
-    
+    logger.info("URL GUI Started")
     ttk.Label(frm, text="Current URL").grid(column=LABEL_COL, row = 0)
 
     global currentURL
