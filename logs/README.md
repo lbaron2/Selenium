@@ -1,0 +1,1 @@
+This folder is not critical to running the software, but will be very helpful in any debugging operations, as it details what happens when. 

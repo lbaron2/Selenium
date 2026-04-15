@@ -1,5 +1,4 @@
 sensitive.txt
-*.md
 *.pyc
 \__pycache__
 *.html

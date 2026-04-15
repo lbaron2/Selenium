@@ -1,0 +1,1 @@
+This software is trying to make Webtesting more GUI based, and allow for non-technical users to see stats about a website such as performance and accesibility issues
