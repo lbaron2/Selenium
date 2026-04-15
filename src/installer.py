@@ -68,7 +68,7 @@ def updateFromZip():
                 if(os.path.isdir(absPathInner)):
                     logger.info(f"\t\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
                     shutil.copytree(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir),dirs_exist_ok=True)
-                elif(os.path.isfile(absPathInner)):
+                elif(os.path.isfile(absPathInner) and not("WebTester.exe" in absPathInner)):
                     logger.info(f"\t\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
                     shutil.copyfile(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir))
     os.chdir("..")
@@ -83,7 +83,7 @@ def downloadUpdate(frm,root):
     
     getZip()
     updateFromZip()
-    # makeEXE()
+    makeEXE()
 
     logger.info("Updating Release")
     setup.sensitive["RELEASE"] = json["name"] 
