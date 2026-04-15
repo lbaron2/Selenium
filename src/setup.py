@@ -3,8 +3,11 @@ from selenium.webdriver.common.by import By
 import json
 import os
 from pathlib import Path
+import logging
 
 
+
+logger = logging.getLogger(__name__)
 def readSens() -> None:
     """Reads in values that are not supposed to be on github through a file called "config", such as website access passwords or API keys"""
     global sensitive
@@ -108,6 +111,7 @@ def setLink(newLink:str):
     saveSens()
 
 def saveSens():
+    logger.info("Saving Sensitive JSON")
     if "json" in os.listdir():
         with open(r"json//config.json", "w+") as txt:
             json.dump(sensitive,txt, ensure_ascii=False, indent=4)

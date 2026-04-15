@@ -8,15 +8,24 @@ import tests as tests
 import installer as installer
 
 import multiprocessing
+import logging
+import datetime
 
 LABEL_COL:int = 0
 ENTRY_COL:int = 1
 BUTTON_COL:int = 20
 
 
+logger = logging.getLogger(__name__)
+
 def main():
     multiprocessing.freeze_support()
     setup.readSens()
+
+    time = datetime.datetime.today().strftime("%Y-%m-%d_%I-%M-%S_%p")
+    fileName =f"logs/log_{time}.log"
+    logging.basicConfig(filename=fileName, level=logging.INFO)
+    logger.info("UI Started")
 
     root = Tk()
     root.geometry("1000x400")
@@ -40,6 +49,7 @@ def main():
 
 def openFileExplorer():
     import webbrowser
+    logger.info("Opening Reports")
     webbrowser.open(f"{setup.sensitive["PATH"]}/reports")
 
 def runButtons(runFRM,root):
@@ -64,6 +74,7 @@ def urlChange(frm):
     ttk.Button(frm, text="Update URL", command=updateURL).grid(column=ENTRY_COL, row=3)
 
 def updateURL():
+    logger.info(f"Updating url: {currentURL} -> {newURL.get()}")
     url = newURL.get()
     setup.setLink(url)
     currentURL.set(url)
@@ -71,6 +82,8 @@ def updateURL():
 
 def updatePrompt(root):
     if(installer.needUpdate()):
+        logger.info("Update Needed")
+
         updateWindow = tk.Toplevel(root)
         updateWindow.geometry("400x100")
         updateWindow.title("Update Prompt")
@@ -79,6 +92,8 @@ def updatePrompt(root):
         updateUI(updateWindow,root)
 
 def restartNotification(root):
+    logger.info("Restart Prompt Activated")
+
     restartWindow = tk.Toplevel(root)
     restartWindow.geometry("400x100")
     restartWindow.title("Restart Prompt")
@@ -89,6 +104,7 @@ def restartNotification(root):
     tk.Button(restartWindow, text="Quit", command=root.destroy).grid(column=6, row=2)
 
 def updateUI(frm,root):
+    logger.info("Update Prompt Activated")
     tk.Label(frm, text="Would you like to Update the Program?").grid(column=3, row = 1)
     tk.Button(frm, text="Yes", command= lambda: installer.downloadUpdate(frm,root)).grid(column=3, row=2)
     tk.Button(frm, text="No", command=frm.destroy).grid(column=6, row=2)

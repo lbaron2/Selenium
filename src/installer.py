@@ -5,7 +5,9 @@ import os
 import shutil
 import zipfile
 import ui
+import logging
 
+logger = logging.getLogger(__name__)
 def update(root):
     setup.readSens()
     makeReqURL()
@@ -52,16 +54,16 @@ def updateFromZip():
         absPath = os.path.join(setup.sensitive["PATH"],dir)
         if("lbaron2" in dir and os.path.isdir(absPath)):
             newFileDir = absPath
-            print(f"current dir: {absPath}")
+            logger.info(f"current dir: {absPath}")
             os.chdir(f"{dir}")
             for innerDir in os.listdir():
                 absPathInner = os.path.join(absPath,innerDir)
-                print(f"current file/folder: {absPathInner}")
+                logger.info(f"current file/folder: {absPathInner}")
                 if(os.path.isdir(absPathInner)):
-                    print(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
+                    logger.info(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
                     shutil.copytree(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir),dirs_exist_ok=True)
                 elif(os.path.isfile(absPathInner)):
-                    print(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
+                    logger.info(f"\t {absPathInner} -> {os.path.join(setup.sensitive["PATH"],innerDir)}")
                     shutil.copyfile(src=absPathInner,dst=os.path.join(setup.sensitive["PATH"],innerDir))
     os.chdir("..")
 

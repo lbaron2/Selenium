@@ -5,3 +5,4 @@ sensitive.txt
 *.html
 *.zip
 \dist
+*.log

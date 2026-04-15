@@ -1,8 +1,11 @@
 import tests as tests
 import setup as setup
 import datetime
+import logging
 
+logger = logging.getLogger(__name__)
 def run():
+    logger.info("Report Started")
     driver = setup.setup()
     pages = setup.findAllPages(driver)
 
