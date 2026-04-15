@@ -39,7 +39,7 @@ def needUpdate() -> bool:
 
 def makeEXE():
     logger.info("\tMaking EXE")
-    os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {setup.sensitive["PATH"]}//src src/ui.py --onefile --distpath {setup.sensitive["PATH"]} --noconsole")
+    os.system(f"pyinstaller -y --clean --debug all -n WebTester -p {os.getcwd()}//src src/ui.py --onefile --distpath {os.getcwd()} --noconsole")
     logger.info("\tFinished Making EXE")
 
 
