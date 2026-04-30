@@ -3,6 +3,8 @@ import setup as setup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+import requests
+
 def findImgs(driver) -> list[str]:
     imgs = driver.find_elements(By.TAG_NAME, "img")
     return imgs
@@ -17,8 +19,12 @@ def ifHasAlt(img) -> bool:
         return False
     return True
 
-def if404(driver) ->bool:
-    return False
+def if200(url) -> bool:
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return False
+    return True
 
 def ifMetaName(driver) ->bool:
     return False

@@ -1,7 +1,8 @@
 {
     "LINK": "https://www.tda.com/",
     "PATH": "C:\\Users\\lbaron\\Documents\\Website\\Selenium",
-    "RELEASE": "0.241",
+    "RELEASE": "0.3",
     "OWNER": "lbaron2",
-    "REPO": "Selenium"
+    "REPO": "Selenium",
+    "SUBPAGES" : "true"
 }

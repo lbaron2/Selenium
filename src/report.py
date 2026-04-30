@@ -2,34 +2,39 @@ import tests as tests
 import setup as setup
 import datetime
 import logging
+import requests
 
 logger = logging.getLogger(__name__)
 def run():
     logger.info("Report Started")
     driver = setup.setup()
-    pages = setup.findAllPages(driver)
+    pages:list[str]= setup.findAllPages(driver)
 
-    time = datetime.datetime.today().strftime("%Y-%m-%d_%I-%M-%S_%p")
-    fileName =f"reports/report_{time}.html"
+    logger.info(f"Running report on: {pages}")
+
+    date = datetime.datetime.today().strftime("%Y-%m-%d_%I-%M-%S_%p")
+    fileName = f"reports/report_{date}.html"
     with open(f"{fileName}","w+") as output: 
 
-        errorCount = 0
-        pageError = 0
+        errorCount:int = 0
+        pageError:int = 0
 
         for page in pages:
+            logger.info(f"\tCurrently On: {page}")
             driver.get(page)
             priorErrorCount = errorCount
-            isNewPage = True;            
+            isNewPage:bool = True;            
 
             print(f"<h2><a src={page}></h2>",end="<br>",file=output)
 
+            
+            errorCount += setup.ifError(tests.if200(page),f"The page has a HTTP Status of {requests.get(f'{page}').status_code}",output)
             # errorCount += setup.ifError(tests.ifConnects(driver),page,"Connection",output)
-            # errorCount += setup.ifError(tests.if404(driver),page,"404",output)
             # errorCount += setup.ifError(tests.ifMetaDesc(driver),page,"Meta Description",output)
+            
             imgs = tests.findImgs(driver)
-
             for img in imgs:
-                errorCount += setup.ifError(tests.ifHasAlt(img),page,isNewPage,f"an image without an alt tag <img style= 'width:100px; height:100px;' src={img.get_attribute("src")}><br>",output)
+                errorCount += setup.ifError(tests.ifHasAlt(img),f"an image without an alt tag <img style= 'width:100px; height:100px;' src={img.get_attribute("src")}><br>",output)
 
             print(f"<br>", file=output)
             if(setup.errorCountDifferent(errorCount,priorErrorCount)):
@@ -37,7 +42,7 @@ def run():
 
         print(f"Out of {len(pages)}, there were {pageError} page(s) with errors a total number of {errorCount} errors across all pages",end="<br>", file=output)
         print(f"The seen pages were: {pages}", end="<br>",file=output)
-        print(f"This report was done at: {time}", end="<br>",file=output)
+        print(f"This report was done at: {date}", end="<br>",file=output)
         print("<br>", file=output)
 
     setup.close(driver)

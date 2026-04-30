@@ -43,8 +43,8 @@ def close(driver) -> None:
     driver.close()
 
 def findLinks(driver) -> list[str]:
-    imgs = driver.find_elements(by=By.TAG_NAME, value ="a")
-    return imgs
+    links = driver.find_elements(by=By.TAG_NAME, value ="a")
+    return links
 
 def findAllLinksOnOnePage(page,driver):
     difLinks = []
@@ -61,13 +61,16 @@ def findAllLinksOnOnePage(page,driver):
     return difLinks       
 
 def findAllPages(driver):
-    links = findLinks(driver)
 
+    originalLink = sensitive["LINK"]
+    if sensitive["SUBPAGES"].lower() == "false":
+        return originalLink
+    
+    links = findLinks(driver)
     seenLinks = []
     pageLinks = []
     unSeenLinks = []
 
-    originalLink = sensitive["LINK"]
     seenLinks.append(sensitive["LINK"])
 
     for page in links:
@@ -93,7 +96,7 @@ def findAllPages(driver):
         seenLinks.append(link) 
         
     sensitive["LINK"] = originalLink
-
+    
     return seenLinks
 
 def errorCountDifferent(errorCount, priorErrorCount):
@@ -101,9 +104,10 @@ def errorCountDifferent(errorCount, priorErrorCount):
             return True
     return False
 
-def ifError(test, page, newPage, type, output) -> int:
-    if(not test):
-        print(f"{type}",end="<br>",file=output)
+def ifError(testResult:bool, testDesc:str, outputFile:str) -> int:
+    if(not testResult):
+        print(f"{testDesc}",end="<br>",file=outputFile)
+        logger.info(f"\t Error found with desc: {testDesc}")
         return 1
     return 0
 

@@ -50,7 +50,7 @@ def main():
 def openFileExplorer():
     import webbrowser
     logger.info(f"Opening Reports at {setup.sensitive["PATH"]}/reports")
-    webbrowser.open(f"{setup.sensitive["PATH"]}/reports")
+    webbrowser.open(f"file://{setup.sensitive["PATH"]}/reports")
 
 def runButtons(runFRM,root):
     logger.info("Run Buttons GUI Stated ")
