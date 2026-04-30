@@ -49,11 +49,11 @@ def main():
 
 def openFileExplorer():
     import webbrowser
-    logger.info("Opening Reports")
+    logger.info(f"Opening Reports at {setup.sensitive["PATH"]}/reports")
     webbrowser.open(f"{setup.sensitive["PATH"]}/reports")
 
 def runButtons(runFRM,root):
-    logger.info("Run Buttons GUI Started")
+    logger.info("Run Buttons GUI Stated ")
     ttk.Button(runFRM, text="Run", command=report.run).grid(column=BUTTON_COL, row=10)
     ttk.Button(runFRM, text="Open", command=openFileExplorer).grid(column=BUTTON_COL, row=11)
     ttk.Button(runFRM, text="Quit", command=root.destroy).grid(column=BUTTON_COL, row=12)

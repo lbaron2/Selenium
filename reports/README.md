@@ -1,0 +1,1 @@
+This is a placeholder for the report folder, which will allow for reports to properly be generated and opened.
